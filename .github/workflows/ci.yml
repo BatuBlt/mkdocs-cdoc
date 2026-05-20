@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black flake8 pylint
+          pip install black flake8 pylint pytest pytest-cov mkdocs mkdocs-material
           pip install -e ".[dev]"
 
       - name: Check formatting with Black
@@ -62,6 +62,14 @@ jobs:
 
       - name: Run tests
         run: pytest tests/ -v --tb=short
+
+      - name: Coverage report
+        run: |
+          pytest tests/ --cov=mkdocs_cdoc --cov-report=term-missing
+
+      - name: Build validation with MkDocs
+        run: |
+          mkdocs build -f mkdocs-site.yml
 
   build:
     name: Build package
